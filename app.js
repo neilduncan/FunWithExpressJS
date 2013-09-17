@@ -8,8 +8,19 @@ app.configure(function () {
 	app.engine('handlebars', engines.handlebars);
 });
 
-app.get('/hello/:name', function(req, res){
-	res.render("index", { name: req.params.name });
+app.get('/hello/:name', function(req, res) {
+	var model = { 
+		'name': req.params.name,
+		'query': []
+	};
+				
+	for(var key in req.query) {
+		var value = req.query[key];
+		
+		model.query.push({ 'key': key, 'value': value});
+	}
+	
+	res.render("index", model);
 });
 
 app.listen(3000);
